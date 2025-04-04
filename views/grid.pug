@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title= title
+  body
+    h1= title
+    p This is the grid page.
+    p Query Parameters:
+    p Rows: #{query.rows}
+    p Columns: #{query.cols}
+
+    - let rows = Number(query.rows)
+    - let cols = Number(query.cols)
+
+    if !Number.isInteger(rows) || !Number.isInteger(cols)
+      p Error: Both rows and columns must be integers.
+    else if rows < 3 || rows > 13
+      p Error: Rows must be between 3 and 13 (inclusive).
+    else if cols < 3 || cols > 13
+      p Error: Columns must be between 3 and 13 (inclusive).
+    else
+      table#outer
+        - for(let i = 0; i < rows; i++) {
+          tr#middle
+            - for(let j = 0; j < cols; j++) {
+              td= i - j
+            - }
+        - }

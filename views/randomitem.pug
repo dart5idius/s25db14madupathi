@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title= title
+    style.
+      img {
+        margin: 10px;
+        border: 2px solid #ddd;
+      }
+  body
+    h1= title
+    p Here are 3 random items:
+
+    - const image_names = ['wooden.jpg', 'padauk.jpg', 'stand.jpg', 'sticks.jpg', 'wooden.jpg']
+    - for (let i = 0; i < 3; i++) {
+      - const randomIndex = Math.floor(Math.random() * image_names.length)
+      img(
+        src=`/images/${image_names[randomIndex]}`,
+        alt=`${image_names[randomIndex].split('.')[0]}`,
+        height="300",
+        width="300"
+      )
+    - }
