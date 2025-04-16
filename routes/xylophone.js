@@ -38,19 +38,23 @@ router.delete('/api/xylophones/:id', xylophoneController.xylophone_delete);
 module.exports = router; */
 const express = require('express');
 const router = express.Router();
-const xylophoneController = require('../controllers/xylophone');
+const xylophone_Controller = require('../controllers/xylophone');
 
 // Debug: Verify imported methods
-console.log('Available controller methods:', Object.keys(xylophoneController));
+console.log('Available controller methods:', Object.keys(xylophone_Controller));
 
 // Debug middleware
 router.use((req, res, next) => {
-  console.log(`[View] Accessing xylophone view`);
+  console.log('[View] Accessing xylophone view');
   next();
 });
 
 /* GET main xylophone view */
-router.get('/', xylophoneController.xylophone_view_all_Page);
+router.get('/', xylophone_Controller.xylophone_view_all_Page);
+/* GET detail xylophone page */
+router.get('/detail', xylophone_Controller.xylophone_view_one_Page);
+
+
 
 module.exports = router;
 

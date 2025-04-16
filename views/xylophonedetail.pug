@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+
+  if toShow
+    div.container.mt-4
+      div.row.mb-2
+        div.col-3.xAttr Xylophone ID:
+        div.col= toShow._id
+      div.row.mb-2
+        div.col-3.xAttr Material:
+        div.col= toShow.material
+      div.row.mb-2
+        div.col-3.xAttr Keys:
+        div.col= toShow.keys
+      div.row.mb-2
+        div.col-3.xAttr Tuning:
+        div.col= toShow.tuning
+  else
+    div.text-danger ❌ No xylophone data was passed to view.
