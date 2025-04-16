@@ -2,24 +2,27 @@ extends layout
 
 block content
   h1= title
-  p Welcome to the #{title} for: Xylophones.
+  p Welcome to the #{title} collection
+  p Last updated: #{lastUpdated}
+  p= JSON.stringify(results)
 
-  -
-    var results = [
-      { material: 'Rosewood', keys: 32, tuning: 'Chromatic' },
-      { material: 'Aluminum', keys: 25, tuning: 'Diatonic' },
-      { material: 'Padauk', keys: 37, tuning: 'Pentatonic' }
-    ];
 
-  div.container-fluid
-    div.row
-      each xylophone, index in results
-        div.col-sm-2(onclick=`buy(${index})` style="cursor: pointer; border: 1px solid #ddd; padding: 10px; margin: 5px;")
-          p Material: #{xylophone.material}
-          p Number of Keys: #{xylophone.keys}
-          p Tuning: #{xylophone.tuning}
+  if results && results.length > 0
+    div.container-fluid
+      div.row
+        each item in results
+          div.col-sm-2(
+            onclick=`buy("${item._id}")` 
+            style="cursor: pointer; border: 1px solid #ddd; padding: 10px; margin: 5px;"
+          )
+            p Material: #{item.material}
+            p Keys: #{item.keys}
+            p Tuning: #{item.tuning}
+  else
+    p No xylophones found in database
 
   script.
-    function buy(index) {
-      alert(`You purchased item ${index}`);
+    function buy(id) {
+      console.log('Purchased item:', id);
+      // Optional: Add actual fetch request here
     }

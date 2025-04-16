@@ -1,16 +1,23 @@
 const xylophone = require('../models/xylophone');
 
+//const test = await xylophone.find({}).lean();
+//console.log('Sample object from MongoDB:', test[0]);
+
+
 exports.xylophone_list = async (req, res) => {
     try {
-      console.log("Executing xylophone_list controller");
-      const results = await xylophone.find({});
-      console.log(`Found ${results.length} xylophone`);
-      res.json(results);
+        console.log("Fetching xylophones...");
+        const results = await xylophone.find({});
+        console.log(`Found ${results.length} xylophones`);
+        res.json(results);
     } catch (err) {
-      console.error("Database error:", err);
-      res.status(500).json({ error: err.message });
+        console.error("Database error:", err);
+        res.status(500).json({ 
+            error: "Database operation failed",
+            details: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
     }
-  };
+};
 
 // [Keep all your other controller methods]
 
@@ -18,7 +25,7 @@ exports.xylophone_list = async (req, res) => {
 exports.xylophone_detail = async function(req, res) {
     try {
         const xylophoneItem = await xylophone.findById(req.params.id);
-        if (!xylophone) {
+        if (!xylophoneItem) {
             return res.status(404).send('xylophone not found');
         }
         res.send(xylophoneItem);
@@ -76,15 +83,24 @@ exports.xylophone_update_put = async function(req, res) {
     }
 };
 
-// View all xylophones page
 exports.xylophone_view_all_Page = async function(req, res) {
     try {
-        const thexylophone = await xylophone.find();
+        const thexylophone = await xylophone.find({}).lean();
+        
+        // Force fresh response - add these headers
+        res.set({
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        });
+
         res.render('xylophone', { 
-            title: 'xylophone Search Results', 
-            results: thexylophone
+            title: 'Xylophone Search Results', 
+            results: thexylophone,
+            lastUpdated: Date.now() // Use timestamp instead of ISO string
         });
     } catch(err) {
-        res.status(500).send('Error: ' + err);
+        console.error('View error:', err);
+        res.status(500).render('error');
     }
 };

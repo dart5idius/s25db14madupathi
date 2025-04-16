@@ -50,6 +50,17 @@ app.use('/pick', pickRouter);
 app.use('/users', usersRouter);
 app.use('/', indexRouter);
 
+app.get('/test-xylophone', (req, res) => {
+  res.render('xylophone', {
+    title: 'Test View',
+    results: [
+      {material: 'Test1', keys: 10, tuning: 'Test1'},
+      {material: 'Test2', keys: 12, tuning: 'Test2'}
+    ],
+    lastUpdated: new Date()
+  });
+});
+
 // 6. Error Handling (Fixed to match your routes)
 app.use((req, res, next) => {
   console.log('404 - Available routes:', [
