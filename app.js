@@ -5,6 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+require('dotenv').config(); 
 
 // Route imports
 const indexRouter = require('./routes/index');
@@ -20,6 +21,9 @@ const app = express();
 // 1. View Engine Setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+
+console.log("🚨 MONGO_CON value at runtime:", process.env.MONGO_CON);
 
 // 2. Database Connection (with error handling)
 mongoose.connect(process.env.MONGO_CON, {
