@@ -22,7 +22,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // 2. Database Connection (with error handling)
-mongoose.connect(process.env.MONGO_CON, {
+const mongoDB = process.env.MONGO_CON || 'mongodb://localhost:27017/devDB';
+mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

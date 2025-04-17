@@ -1,22 +1,31 @@
 extends layout
 
 block content
-  h1= title
+  h1.text-center.mb-4.text-primary= title
 
-  form(id='XylophoneForm', action='/resource/xylophone', method='POST')
-    div.form-group
-      label.xAttr(for='material') Material
-      input#material(type='text', name='material')
+  div.container.shadow-lg.p-5.bg-light.rounded
+    form(id='XylophoneForm', action='/resource/xylophone', method='POST')
+      div.row.mb-3
+        div.col-md-6
+          label.xAttr(for='material') Material
+          input#material.form-control(type='text', name='material', placeholder='Enter the material of the xylophone')
 
-    div.form-group
-      label.xAttr(for='keys') Number of Keys
-      input#keys(type='number', name='keys')
+        div.col-md-6
+          label.xAttr(for='keys') Number of Keys
+          input#keys.form-control(type='number', name='keys', placeholder='Number of keys')
 
-    div.form-group
-      label.xAttr(for='tuning') Tuning
-      input#tuning(type='text', name='tuning')
+      div.row.mb-4
+        div.col-md-12
+          label.xAttr(for='tuning') Tuning
+          select#tuning.form-select(name='tuning')
+            option(value='') -- Select Tuning --
+            option(value='C Major') C Major
+            option(value='D Minor') D Minor
+            option(value='Pentatonic') Pentatonic
+            option(value='Chromatic') Chromatic
 
-    input(type='submit')
+      div.text-center
+        button.btn.btn-success.btn-lg(type='submit') 🎵 Add Xylophone
 
   script.
     document.forms['XylophoneForm'].addEventListener('submit', (event) => {
@@ -27,9 +36,10 @@ block content
       })
       .then(resp => resp.json())
       .then(body => {
-        alert("Save succeeded");
+        alert("🎉 Xylophone saved successfully!");
+        window.location.href = '/xylophone';
       })
       .catch(error => {
-        alert("Save failed: " + error);
+        alert("❌ Save failed: " + error);
       });
     });

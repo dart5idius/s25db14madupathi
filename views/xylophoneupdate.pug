@@ -3,41 +3,48 @@ extends layout
 block content
   h1= title
 
-  // Display ID outside form
-  div.form-group
-    label.xAttr ID
-    div= toShow._id
-
-  form(id='XylophoneUpdateForm', action=`/resource/xylophone/${toShow._id}`, method='POST')
-    // Method override for PUT
-    input(type='hidden', name='_method', value='PUT')
-
+  if toShow
+    // Display ID outside form
     div.form-group
-      label.xAttr(for='material') Material
-      input#material(type='text', name='material', value=toShow.material)
+      label.xAttr ID
+      div= toShow._id
 
-    div.form-group
-      label.xAttr(for='keys') Number of Keys
-      input#keys(type='number', name='keys', value=toShow.keys)
+    form(id='XylophoneUpdateForm', action=`/resource/xylophone/${toShow._id}`, method='POST')
+      // Method override for PUT
+      input(type='hidden', name='_method', value='PUT')
 
-    div.form-group
-      label.xAttr(for='tuning') Tuning
-      input#tuning(type='text', name='tuning', value=toShow.tuning)
+      div.form-group
+        label.xAttr(for='material') Material
+        input#material(type='text', name='material', value=toShow.material)
 
-    input(type='submit')
+      div.form-group
+        label.xAttr(for='keys') Number of Keys
+        input#keys(type='number', name='keys', value=toShow.keys)
 
-  script.
-    document.forms['XylophoneUpdateForm'].addEventListener('submit', (event) => {
-      event.preventDefault();
-      fetch(event.target.action, {
-        method: 'PUT',
-        body: new URLSearchParams(new FormData(event.target))
-      })
-      .then(resp => resp.json())
-      .then(body => {
-        alert("Update succeeded");
-      })
-      .catch(error => {
-        alert("Update failed: " + error);
+      div.form-group
+        label.xAttr(for='tuning') Tuning
+        input#tuning(type='text', name='tuning', value=toShow.tuning)
+
+      input(type='submit')
+
+    script.
+      document.forms['XylophoneUpdateForm'].addEventListener('submit', (event) => {
+        event.preventDefault();
+        fetch(event.target.action, {
+          method: 'PUT',
+          body: new URLSearchParams(new FormData(event.target))
+        })
+        .then(resp => resp.json())
+        .then(body => {
+          alert("Update succeeded");
+        })
+        .catch(error => {
+          alert("Update failed: " + error);
+        });
       });
-    });
+
+  else
+    div.alert.alert-danger.mt-4
+      strong Error:
+      |  No xylophone was found for the provided ID.
+    a.btn.btn-secondary.mt-3(href='/xylophone') Back to Xylophones
