@@ -53,6 +53,9 @@ router.use((req, res, next) => {
 router.get('/', xylophone_Controller.xylophone_view_all_Page);
 /* GET detail xylophone page */
 router.get('/detail', xylophone_Controller.xylophone_view_one_Page);
+/* GET create xylophone page */
+router.get('/create', xylophone_Controller.xylophone_create_Page);
+
 
 
 

@@ -105,6 +105,17 @@ exports.xylophone_view_one_Page = async function(req, res) {
 };
 
 
+// Render the form page to create a new xylophone
+exports.xylophone_create_Page = function(req, res) {
+    console.log("Create view loaded");
+    try {
+      res.render('xylophonecreate', { title: 'Create New Xylophone' });
+    } catch (err) {
+      res.status(500).send(`{'error': '${err}'}`);
+    }
+  };
+  
+
 
 // Render all xylophones on a view page
 exports.xylophone_view_all_Page = async function(req, res) {

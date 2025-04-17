@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1= title
+
+  form(id='XylophoneForm', action='/resource/xylophone', method='POST')
+    div.form-group
+      label.xAttr(for='material') Material
+      input#material(type='text', name='material')
+
+    div.form-group
+      label.xAttr(for='keys') Number of Keys
+      input#keys(type='number', name='keys')
+
+    div.form-group
+      label.xAttr(for='tuning') Tuning
+      input#tuning(type='text', name='tuning')
+
+    input(type='submit')
+
+  script.
+    document.forms['XylophoneForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(event.target))
+      })
+      .then(resp => resp.json())
+      .then(body => {
+        alert("Save succeeded");
+      })
+      .catch(error => {
+        alert("Save failed: " + error);
+      });
+    });
