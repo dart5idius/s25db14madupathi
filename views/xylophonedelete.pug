@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  h1= title
+
+  if toShow
+    div.container.mt-4
+      div.row.mb-3
+        div.col-3.xAttr Xylophone ID:
+        div.col= toShow._id
+      div.row.mb-3
+        div.col-3.xAttr Material:
+        div.col= toShow.material
+      div.row.mb-3
+        div.col-3.xAttr Keys:
+        div.col= toShow.keys
+      div.row.mb-3
+        div.col-3.xAttr Tuning:
+        div.col= toShow.tuning
+
+    div.mt-4
+      button.btn.btn-danger(onclick=`deleteXylophone('${toShow._id}')`) Delete
+      button.btn.btn-secondary.ms-2(onclick='window.location.href="/xylophone"') Cancel
+  else
+    div.text-danger ❌ No xylophone data was passed to view.
+
+  script.
+    function deleteXylophone(id) {
+      fetch(`/resource/xylophone/${id}`, { method: 'DELETE' })
+        .then(response => {
+          if (!response.ok) throw new Error('Delete failed');
+          alert('Delete succeeded');
+          window.location.href = "/xylophone";
+        })
+        .catch(error => {
+          alert("Delete failed: " + error);
+        });
+    }

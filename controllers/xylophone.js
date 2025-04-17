@@ -114,9 +114,44 @@ exports.xylophone_create_Page = function(req, res) {
       res.status(500).send(`{'error': '${err}'}`);
     }
   };
+
+
+  // Render the form page to update an existing xylophone
+exports.xylophone_update_Page = async function(req, res) {
+    console.log("Update view for ID:", req.query.id);
+    try {
+        const result = await Xylophone.findById(req.query.id).lean();
+        if (!result) {
+            return res.status(404).send("Document not found");
+        }
+        res.render('xylophoneupdate', {
+            title: 'Update Xylophone',
+            toShow: result
+        });
+    } catch (err) {
+        res.status(500).send(`{'error': '${err}'}`);
+    }
+};
+
+// Render the view for deleting a xylophone
+exports.xylophone_delete_Page = async function(req, res) {
+    console.log("Delete view for ID:", req.query.id);
+    try {
+        const result = await Xylophone.findById(req.query.id).lean();
+        if (!result) {
+            return res.status(404).send("Document not found");
+        }
+        res.render('xylophonedelete', {
+            title: 'Delete Xylophone',
+            toShow: result
+        });
+    } catch (err) {
+        res.status(500).send(`{'error': '${err}'}`);
+    }
+};
+
+
   
-
-
 // Render all xylophones on a view page
 exports.xylophone_view_all_Page = async function(req, res) {
     try {
