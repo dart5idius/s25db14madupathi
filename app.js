@@ -6,6 +6,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
 
 // Route imports
 const indexRouter = require('./routes/index');
@@ -39,6 +43,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: 'keyboard cat',  // you can replace with your own secret string
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // 4. Route Debugging Middleware (NEW - helps identify issues)
 app.use((req, res, next) => {
   console.log(`Incoming ${req.method} ${req.originalUrl}`);
@@ -63,6 +75,13 @@ app.get('/test-xylophone', (req, res) => {
     lastUpdated: new Date()
   });
 });
+
+// Passport config
+const Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
 
 // 6. Error Handling (Fixed to match your routes)
 app.use((req, res, next) => {
