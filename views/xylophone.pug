@@ -10,20 +10,18 @@ block content
     div.container-fluid
       div.row
         each item in results
-          - let destination = `goToUpdate("${item._id}")`
           div.col-sm-2(
-            style="cursor: pointer; border: 1px solid #ddd; padding: 10px; margin: 5px;"
+            style="border: 1px solid #ddd; padding: 10px; margin: 5px;"
           )
             p Material: #{item.material}
             p Keys: #{item.keys}
             p Tuning: #{item.tuning}
-            a.btn.btn-primary.mt-2(href=`
-            
-            /xylophone/update?id=${item._id}`) Update
+
+            a.btn.btn-primary.mt-2(href=`/xylophone/update?id=${item._id}`) Update
+            a.btn.btn-info.mt-2.ms-2(href=`/xylophone/detail?id=${item._id}`) View
+            a.btn.btn-danger.mt-2.ms-2(href=`/xylophone/delete?id=${item._id}`) Delete
   else
     p No xylophones found in database
 
-  script.
-    function goToUpdate(id) {
-      window.location.href = `/resource/xylophone/update?id=${id}`;
-    }
+  if message
+    p.text-danger= message

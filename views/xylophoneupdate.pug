@@ -27,20 +27,39 @@ block content
 
       input(type='submit')
 
+    // 🔧 FIXED INDENTATION FOR SCRIPT
     script.
-      document.forms['XylophoneUpdateForm'].addEventListener('submit', (event) => {
+      document.forms['XylophoneUpdateForm'].addEventListener('submit', async (event) => {
         event.preventDefault();
-        fetch(event.target.action, {
-          method: 'PUT',
-          body: new URLSearchParams(new FormData(event.target))
-        })
-        .then(resp => resp.json())
-        .then(body => {
+
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        const data = {
+          material: formData.get('material'),
+          keys: parseInt(formData.get('keys')),
+          tuning: formData.get('tuning')
+        };
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText);
+          }
+
+          const result = await response.json();
           alert("Update succeeded");
-        })
-        .catch(error => {
-          alert("Update failed: " + error);
-        });
+        } catch (error) {
+          alert("Update failed: " + error.message);
+        }
       });
 
   else
