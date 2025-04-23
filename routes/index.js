@@ -55,7 +55,7 @@ router.post('/register', function(req, res) {
 
 // GET Login
 router.get('/login', function(req, res) {
-  res.render('login', { title: 'Costume App Login', user: req.user });
+  res.render('login', { title: 'xylophone App Login', user: req.user });
 });
 
 // POST Login

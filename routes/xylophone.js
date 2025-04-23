@@ -49,6 +49,13 @@ router.use((req, res, next) => {
   next();
 });
 
+const secured = (req, res, next) => {
+  if (req.user){
+  return next();
+  }
+  res.redirect("/login");
+  }
+
 /* GET main xylophone view */
 router.get('/', xylophone_Controller.xylophone_view_all_Page);
 /* GET detail xylophone page */
@@ -56,7 +63,7 @@ router.get('/detail', xylophone_Controller.xylophone_view_one_Page);
 /* GET create xylophone page */
 router.get('/create', xylophone_Controller.xylophone_create_Page);
 /* GET update xylophone page */
-router.get('/update', xylophone_Controller.xylophone_update_Page);
+router.get('/update', secured, xylophone_Controller.xylophone_update_Page);
 /* GET delete xylophone page */
 router.get('/delete', xylophone_Controller.xylophone_delete_Page);
 
