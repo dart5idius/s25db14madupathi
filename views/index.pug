@@ -1,21 +1,11 @@
-extends layout
-
 block content
-  h1= title
-  p Welcome to our #{title} application. This is the second project.
-  
-  button(type="button", class="btn btn-primary", onclick="faster()") Sample Button
-  
-  div#faster Add in extra
-
-  script.
-    let value = 1;
-    let amt = 2;
-
-    function faster() {
-      amt *= 2;
-      value += amt;
-      document.getElementById('faster').textContent = `Faster ${value} times ${amt}`;
-    }
-
-  a(href="/xylophones") Xylophones Page
+  h1 Welcome to the xylophone App!
+  if !user
+    a(href="/login") Login
+    br
+    a(href="/register") Register
+  else
+    p You are currently logged in as #{user.username}
+    a(href="/xylophone") Take me to xylophone
+    br
+    a(href="/logout") Logout

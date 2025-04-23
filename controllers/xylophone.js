@@ -16,17 +16,23 @@ exports.xylophone_list = async (req, res) => {
     }
 };
 
-// GET one xylophone by ID
+// GET one xylophone by ID 
 exports.xylophone_detail = async function(req, res) {
     console.log("Fetching detail for xylophone ID:", req.params.id);
     try {
         const xylophoneItem = await Xylophone.findById(req.params.id);
         if (!xylophoneItem) {
-            return res.status(404).send(`Xylophone with id ${req.params.id} not found.`);
+            console.warn(`Xylophone not found: ${req.params.id}`);
+            return res.status(404).json({
+                error: `Xylophone with ID ${req.params.id} not found`
+            });
         }
-        res.send(xylophoneItem);
+        res.status(200).json(xylophoneItem);
     } catch (err) {
-        res.status(500).send(`{"error": "Document for id ${req.params.id} not found"}`);
+        console.error("Database error:", err);
+        res.status(500).json({
+            error: `Internal server error while looking for ID ${req.params.id}`
+        });
     }
 };
 
@@ -116,20 +122,27 @@ exports.xylophone_create_Page = function(req, res) {
   };
 
 
-  // Render the form page to update an existing xylophone
-exports.xylophone_update_Page = async function(req, res) {
-    console.log("Update view for ID:", req.query.id);
+  exports.xylophone_update_Page = async function(req, res) {
+    console.log("🔄 Trying to update xylophone with ID:", req.query.id);
     try {
         const result = await Xylophone.findById(req.query.id).lean();
         if (!result) {
-            return res.status(404).send("Document not found");
+            console.warn(`No xylophone found to update with ID: ${req.query.id}`);
+            return res.status(404).render('error', {
+                message: "Xylophone not found",
+                error: { status: 404 }
+            });
         }
         res.render('xylophoneupdate', {
             title: 'Update Xylophone',
             toShow: result
         });
     } catch (err) {
-        res.status(500).send(`{'error': '${err}'}`);
+        console.error("🔥 Error loading update page:", err);
+        res.status(500).render('error', {
+            message: "Internal Server Error",
+            error: err
+        });
     }
 };
 

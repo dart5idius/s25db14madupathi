@@ -44,20 +44,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: 'keyboard cat',  // you can replace with your own secret string
+  secret: 'keyboard cat',  
   resave: false,
   saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 4. Route Debugging Middleware (NEW - helps identify issues)
+// 4. Route Debugging Middleware 
 app.use((req, res, next) => {
   console.log(`Incoming ${req.method} ${req.originalUrl}`);
   next();
 });
 
-// 5. Routes (EXACTLY as you have them)
+// 5. Routes 
 app.use('/resource', resourceRouter);
 app.use('/xylophone', xylophoneRouter);
 app.use('/grid', gridRouter);
